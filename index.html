@@ -4,8 +4,8 @@
 		<title>RGB Color Game</title>
 		<link rel="stylesheet" type="text/css" href="style.css">
 	</head>
-	<body>
-		<h1>Please select  <br><span id="colorDisplay">RGB</span><br> Color bellow.</h1>
+	<body onLoad = "timer()">
+		<h1>Please select  <br><span id="colorDisplay">RGB</span><br> Color below.</h1>
 
 
 		<div id="stripe">
@@ -24,8 +24,10 @@
 			<hr>
 		</div>
 		<div class = wrapper>
-		 <button id = "back" onclick="goBack()">I give up! </button>
+		 <div class="score" ></div>
+		 <div id="time" ></div>
 		</div>
+		*Scores are calculated based on both, no. of attempts and time, having equal weightage.
 		<!-- Include JS -->
 		<script src="script.js"></script>
 	</body>

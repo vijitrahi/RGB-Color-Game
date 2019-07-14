@@ -20,12 +20,36 @@
 	var resetBtn =  document.querySelector("#reset");
 	var easyBtn =   document.querySelector("#easyBtn");
 	var hardBtn =   document.querySelector("#hardBtn");
+	var scores = document.querySelector(".score");
+	var score = 0;
+	var selected = 1;
+	var time1 = new Date(); 		//For Starting time whenever new game starts
+	var start = null;				//To set time update intervals
+	var time;						
 
+	function timer(){
+		 updateClock();
+		start = setInterval("updateClock()", 10);
+	}
+	function updateClock(){
+		var time2 = new Date();
+		time = new Date(time2-time1);		//Time difference between 
+		 min = time.getUTCMinutes()
+        ,sec = time.getUTCSeconds()
+        ,ms = parseInt(time.getUTCMilliseconds()/10);
+	document.getElementById("time").innerHTML = "TIME : " +
+		(min > 9 ? min : "0" + min) + ":" + 
+        (sec > 9 ? sec : "0" + sec) + "." + 
+        (ms > 9 ? ms : "0" + ms);
+	}
+	
+	
 	// EASY BUTTON
 	easyBtn.addEventListener("click", function(){
+		newGame();
+		selected = 0;
 		hardBtn.classList.remove("selected");
 		easyBtn.classList.add("selected");
-
 		// genetate All new colors
 		colors = generateRandomColors(3);
 		// pick a new randeom color from array
@@ -44,9 +68,10 @@
 	}); // end of EASY BTN
 	// HARD BUTTON
 	hardBtn.addEventListener("click", function(){
+		selected = 1;
+		newGame();
 		easyBtn.classList.remove("selected");
 		hardBtn.classList.add("selected");
-
 		// genetate All new colors
 		colors = generateRandomColors(6);
 		// pick a new randeom color from array
@@ -64,7 +89,11 @@
 	// RESET BUTTON
 	resetBtn.addEventListener("click", function(){
 		// genetate All new colors
+		newGame();
+		if(selected == 1)
 		colors = generateRandomColors(6);
+		else
+		colors = generateRandomColors(3);	
 		// pick a new randeom color from array
 		pickedColor = pickColor();
 		// change colorDisplay to match picked color
@@ -72,10 +101,13 @@
 		resetBtn.textContent = "New Colors";
 		h1.style.background = "#3498db";
 		// change colors of squares
-		for(var i = 0; i < squares.length;  i++) {
-			squares[i].style.background = colors[i];
+		for(var i = 0; i < squares.length; i++){
+			if(colors[i]) {
+				squares[i].style.background = colors[i];
+			} else {
+				squares[i].style.display = "none";
+			}
 		}
-
 
 	});
 
@@ -94,9 +126,12 @@
 				resetBtn.textContent = "Play Again?";
 				changeColors(clickedColor);
 				h1.style.background = clickedColor;
+				scoreCalculator();
+				//Calculate Score
 			} else {
 				messageDisplay.textContent = "Try Again";
 				this.style.background = "#3b5998";
+				score++;
 			}
 		});
 	}
@@ -138,7 +173,28 @@
 		var randomColor = "rgb("+ r +", "+ g +", "+ b +")";
 		return randomColor;
 	}
+	
+	
+	function newGame(){
+		clearInterval(start);
+		time1 = new Date();
+		start = setInterval("updateClock()", 10);
+		score=0;
+		scores.textContent = "";
+	}
 
+	function scoreCalculator(){
+		clearInterval(start);
+		var score1;
+		var totalTime = ((time.getUTCSeconds()) * 1000 + (time.getUTCMilliseconds()) ) / 1000;
+		if(selected==0)
+			score1 = (totalTime>5 ? 0 : 100 - 25*score - totalTime*10);
+		else
+			score1 = (totalTime>8 ? 0 : 100 - 10*score - totalTime*25/4);
+		scores.textContent = "SCORE : " + parseInt(score1*10);
+	}
+	
+	
 	function goBack() {
     window.history.back();
 }
