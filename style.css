@@ -11,7 +11,7 @@ body{
 	float: left;
 	margin: 1.66%;
 	border-radius: 15%;
-	transition: background 0.8s;
+	transition: background 0.6s;
 }
 
 #container {
@@ -72,19 +72,28 @@ button:hover {
 	color: #fff;
 }
 
-#back{
+.score{
+	display:inline-block;
 	color: white;
 	width: 30%;
 	height: 20%;
-	background: #3b5998;
-	text-transform: none;
-	float: none;
 	border-radius: 15%;
-	transition: background 0.8s;
-
+	font-size:160%;
+	margin-right:5%;
 }
-#back:hover{
-	background-color:#3b5998;
+#time{
+	display:inline-block;
+	color: white;
+	width: 30%;
+	height: 20%;
+	border-radius: 15%;
+	font-size:160%;
+}
+.score:hover{
+	color: red;
+}
+
+#time:hover{
 	color: red;
 }
 

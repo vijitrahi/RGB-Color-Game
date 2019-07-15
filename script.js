@@ -21,7 +21,7 @@
 	var easyBtn =   document.querySelector("#easyBtn");
 	var hardBtn =   document.querySelector("#hardBtn");
 	var scores = document.querySelector(".score");
-	var score = 0;
+	var score = [0,0,0,0,0,0];
 	var selected = 1;
 	var time1 = new Date(); 		//For Starting time whenever new game starts
 	var start = null;				//To set time update intervals
@@ -37,10 +37,16 @@
 		 min = time.getUTCMinutes()
         ,sec = time.getUTCSeconds()
         ,ms = parseInt(time.getUTCMilliseconds()/10);
+		if(selected==1){
 	document.getElementById("time").innerHTML = "TIME : " +
-		(min > 9 ? min : "0" + min) + ":" + 
-        (sec > 9 ? sec : "0" + sec) + "." + 
-        (ms > 9 ? ms : "0" + ms);
+        (sec <= 7 ? 7-sec : 0 ) + "." + 
+        (ms > 9 ? (sec <= 7 ? 99-ms:"00") : (sec <= 7 ? "0" + 99-ms:"00") );
+	}
+	if(selected==0){
+	document.getElementById("time").innerHTML = "TIME : " +
+        (sec <= 4 ? 4-sec : 0 ) + "." + 
+        (ms > 9 ? (sec <= 4 ? 99-ms:"00") : (sec <= 4 ? "0" + 99-ms:"00") );
+	}
 	}
 	
 	
@@ -131,10 +137,22 @@
 			} else {
 				messageDisplay.textContent = "Try Again";
 				this.style.background = "#3b5998";
-				score++;
+				if(clickedColor == colors[0])
+				score[0] ++ ;
+				if(clickedColor == colors[1])
+				score[1] ++ ;
+				if(clickedColor == colors[2])
+				score[2] ++ ;
+				if(clickedColor == colors[3])
+				score[3] ++ ;
+				if(clickedColor == colors[4])
+				score[4] ++ ;
+				if(clickedColor == colors[5])
+				score[5] ++ ;
 			}
-		});
-	}
+		}
+	);}
+
 
 	function changeColors(color){
 		// loop through all squares
@@ -179,18 +197,23 @@
 		clearInterval(start);
 		time1 = new Date();
 		start = setInterval("updateClock()", 10);
-		score=0;
+		score = [0,0,0,0,0,0];
 		scores.textContent = "";
 	}
 
 	function scoreCalculator(){
 		clearInterval(start);
 		var score1;
+		var score2=0;
+		for( var i = 0; i < 6 ; i++ ){
+			if(score[i] > 0)
+				score2++;
+		}
 		var totalTime = ((time.getUTCSeconds()) * 1000 + (time.getUTCMilliseconds()) ) / 1000;
 		if(selected==0)
-			score1 = (totalTime>5 ? 0 : 100 - 25*score - totalTime*10);
+			score1 = (totalTime>5 ? 0 : 100 - 25*score2 - totalTime*10);
 		else
-			score1 = (totalTime>8 ? 0 : 100 - 10*score - totalTime*25/4);
+			score1 = (totalTime>8 ? 0 : 100 - 10*score2 - totalTime*25/4);
 		scores.textContent = "SCORE : " + parseInt(score1*10);
 	}
 	
